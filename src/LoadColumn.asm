@@ -26,15 +26,6 @@ Nametable1:
   sta column_address+1
 
 DrawColumn:
-
-  lda level_data
-  clc
-  adc #30
-  sta level_data
-  bcc :+
-  inc level_data+1
-:
-
   lda PPUSTATUS
   lda column_address + 1
   sta PPUADDR
@@ -48,6 +39,14 @@ DrawColumnLoop:
   iny
   dex
   bne DrawColumnLoop
+
+  lda level_data
+  clc
+  adc #30
+  sta level_data
+  bcc :+
+  inc level_data+1
+:
 
   pla                   ; restore registers
   tay
