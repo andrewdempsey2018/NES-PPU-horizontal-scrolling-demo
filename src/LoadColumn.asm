@@ -26,6 +26,15 @@ Nametable1:
   sta column_address+1
 
 DrawColumn:
+
+  lda level_data
+  clc
+  adc #30
+  sta level_data
+  bcc :+
+  inc level_data+1
+:
+
   lda PPUSTATUS
   lda column_address + 1
   sta PPUADDR
@@ -34,7 +43,7 @@ DrawColumn:
   ldx #$1E              ; $1E = 30 tiles per column
   ldy #$00
 DrawColumnLoop:
-  lda #2
+  lda (level_data), y
   sta PPUDATA
   iny
   dex
