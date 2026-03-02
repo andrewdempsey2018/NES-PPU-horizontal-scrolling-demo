@@ -180,15 +180,17 @@ sleep:
 .segment "RODATA"
 
 palettes:
-  .byte $0f,$00,$10,$30 ; background
-  .byte $0f,$01,$21,$31
-  .byte $0f,$06,$16,$26
-  .byte $0f,$09,$19,$29
+                        ; bg
+  .byte $22,$29,$1A,$0F
+  .byte $0F,$36,$17,$0F
+  .byte $0F,$30,$21,$0F
+  .byte $0F,$27,$17,$0F
 
-  .byte $0f,$00,$10,$30 ; sprite
-  .byte $0f,$01,$21,$31
-  .byte $0f,$06,$16,$26
-  .byte $0f,$09,$19,$29
+                        ; sprite
+  .byte $22,$16,$27,$18
+  .byte $0F,$1A,$30,$27
+  .byte $0F,$16,$30,$27
+  .byte $0F,$0F,$36,$17
 
 ; ----------------------------------- ;
 level1:
