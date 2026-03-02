@@ -53,11 +53,11 @@ NewColumnCheck:
   
   lda column_number
   clc
-  adc #1
+  adc #$01
   sta column_number
-  cmp #32
+  cmp #$20
   bne :+
-  lda #0
+  lda #$00
   sta column_number
  :
 NewColumnCheckDone:
@@ -69,6 +69,7 @@ NewColumnCheckDone:
 
                         ; This is the PPU clean up section, so rendering the next frame starts properly.
   lda #%10010000        ; enable NMI, sprites from Pattern Table 0, background from Pattern Table 1
+  ora nametable_number
   sta PPUCTRL
   lda #%00011110        ; enable sprites, enable background, no clipping on left side
   sta PPUMASK
@@ -105,13 +106,7 @@ load_palettes:
   cpx #$20              ; there are 32 colours to load
   bne load_palettes
 
-  ;;;;;;;;;;;;;;;;;;;;;;;;;
-  ;lda PPUSTATUS
-  ;lda #$20
-  ;sta PPUADDR
-  ;lda #$00
-  ;sta PPUADDR
-
+                        ; initialize level data
   lda #>screen1
   sta level_data+1
   lda #<screen1
