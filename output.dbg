@@ -1,6 +1,6 @@
 version	major=2,minor=0
 info	csym=0,file=8,lib=0,line=500,mod=1,scope=8,seg=9,span=436,sym=71,type=6
-file	id=0,name="src/main.asm",size=22122,mtime=0x69A624C5,mod=0
+file	id=0,name="src/main.asm",size=22122,mtime=0x69A62A42,mod=0
 file	id=1,name="src/constants.inc",size=1058,mtime=0x6991DD70,mod=0
 file	id=2,name="src/header.inc",size=380,mtime=0x69A49458,mod=0
 file	id=3,name="src/reset.asm",size=580,mtime=0x69A4A1C6,mod=0
