@@ -17,6 +17,8 @@ scroll_x: .res 1
 
 level_data: .res 2
 
+pointer: .res 2
+
 .segment "CODE"
 
 .proc irq_handler
@@ -137,7 +139,51 @@ InitializeNametablesLoop:
   inc column_number
   
 InitializeNametablesDone:
-  
+
+  LDA #$00                ; set back to increment +1 mode in prep for loading attributes
+  STA PPUCTRL
+
+  lda #>attribs3
+  sta pointer+1
+  lda #<attribs3
+  sta pointer
+
+  ;;;;;
+DrawAtt:
+  lda PPUSTATUS
+  lda #$23
+  sta PPUADDR
+  lda #$C0
+  sta PPUADDR
+  ldx #$00             ; $1E = 30 tiles per column
+  ldy #$00
+DrawAttLoop:
+  lda (pointer), y
+  sta PPUDATA
+  iny
+  cpy #$40
+  bne DrawAttLoop
+
+  lda #>attribs2
+  sta pointer+1
+  lda #<attribs2
+  sta pointer
+
+DrawAtt2:
+  lda PPUSTATUS
+  lda #$27
+  sta PPUADDR
+  lda #$C0
+  sta PPUADDR
+  ldx #$00             ; $1E = 30 tiles per column
+  ldy #$00
+DrawAttLoop2:
+  lda (pointer), y
+  sta PPUDATA
+  iny
+  cpy #$40
+  bne DrawAttLoop2
+  ;;;;;
   ;;;;;;;;;;;;;;;;;;;;;;;;;
 
   cli
@@ -333,8 +379,26 @@ ColumnLow:
   .byte $00,$01,$02,$03,$04,$05,$06,$07,$08,$09,$0A,$0B,$0C,$0D,$0E,$0F,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$1A,$1B,$1C,$1D,$1E,$1F
 
 
-levels:
-  .word screen1
-  .word screen2
-  .word screen3
-  .word screen4
+attribs:
+	.byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$88,$aa,$00,$00
+	.byte $00,$00,$00,$00,$00,$a2,$00,$00,$00,$00,$00,$00,$00,$2a,$00,$00
+	.byte $00,$00,$00,$00,$00,$a2,$00,$00,$00,$00,$00,$00,$00,$0a,$00,$00
+	.byte $50,$50,$50,$50,$50,$50,$50,$50,$05,$05,$05,$05,$05,$05,$05,$05
+
+attribs2:
+	.byte $aa,$aa,$aa,$aa,$aa,$aa,$aa,$aa,$aa,$aa,$aa,$aa,$aa,$aa,$aa,$aa
+	.byte $aa,$aa,$aa,$ea,$aa,$aa,$aa,$aa,$aa,$aa,$aa,$aa,$aa,$aa,$aa,$aa
+	.byte $ab,$aa,$af,$af,$a7,$aa,$aa,$aa,$0a,$0a,$0a,$0a,$0a,$0a,$0a,$0a
+	.byte $50,$50,$50,$50,$50,$50,$50,$50,$05,$05,$05,$05,$05,$05,$05,$05
+
+attribs3:
+	.byte $aa,$aa,$aa,$aa,$aa,$aa,$aa,$aa,$aa,$aa,$aa,$aa,$aa,$aa,$aa,$aa
+	.byte $aa,$aa,$aa,$aa,$aa,$aa,$aa,$aa,$aa,$aa,$aa,$aa,$aa,$aa,$aa,$aa
+	.byte $aa,$aa,$aa,$aa,$aa,$aa,$22,$00,$0a,$02,$00,$00,$08,$0a,$02,$00
+	.byte $50,$50,$50,$50,$50,$50,$50,$50,$05,$05,$05,$05,$05,$05,$05,$05
+
+attribs4:
+	.byte $aa,$aa,$aa,$aa,$aa,$aa,$aa,$aa,$aa,$aa,$aa,$aa,$aa,$aa,$aa,$aa
+	.byte $aa,$aa,$aa,$aa,$aa,$aa,$aa,$aa,$aa,$aa,$aa,$aa,$aa,$aa,$aa,$aa
+	.byte $aa,$2a,$0a,$0a,$aa,$aa,$22,$00,$0a,$02,$00,$00,$08,$0a,$02,$00
+	.byte $50,$50,$50,$50,$50,$50,$50,$50,$05,$05,$05,$05,$05,$05,$05,$05
